@@ -46,7 +46,7 @@ def download_video(vid_id):
 
     print('saving file',vid_id)
 
-    with open('downloads/' + file_name, 'wb') as file:
+    with open(file_name, 'wb') as file:
         for i in range(0, len(download_file), chunk_size):
             chunk = download_file[i:i+chunk_size]
             file.write(chunk)
@@ -187,3 +187,18 @@ submit_button.grid(row=0, column=2, padx=5, pady=5)
 
 # Start the main event loop
 root.mainloop()
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def run_program(request):
+    # Get input parameters from request
+    param1 = request.POST.get('param1')
+    param2 = request.POST.get('param2')
+    
+    # Call your program with input parameters
+    result = submit(param1, param2)
+    
+    # Return result as JSON response
+    return JsonResponse({'result': result})
